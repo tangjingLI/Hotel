@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hotel.data.admin.AdminMapper">
+    <insert id="addManager" parameterType="com.example.hotel.po.User" useGeneratedKeys="true" keyProperty="id">
+        insert into User
+        <!--修改存储方式，如果字段为空，不想哟插入数据。并且mybatis 字段是区分大小写的-->
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="email != null  and email != ''">email,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="userName != null and userName != ''">userName,</if>
+            <if test="phoneNumber != null and phoneNumber != ''">phoneNumber,</if>
+            <if test="credit != null and credit != ''">credit,</if>
+            <if test="userType != null ">userType,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="password != null and password != '' ">#{password},</if>
+            <if test="userName != null and userName != '' ">#{userName},</if>
+            <if test="phoneNumber != null and phoneNumber != '' ">#{phoneNumber},</if>
+            <if test="userType != null  ">#{userType},</if>
+        </trim>
+    </insert>
+    <select id="getAllManagers" resultMap="User">
+        select * from User where usertype='HotelManager'
+    </select>
+    <select id="getAllClients" resultMap="User">
+        select * from User where usertype='Client'
+    </select>
+
+
+    <resultMap id="User" type="com.example.hotel.po.User">
+        <id column="id" property="id"></id>
+        <result column="email" property="email"></result>
+        <result column="password" property="password"></result>
+        <result column="username" property="userName"></result>
+        <result column="phonenumber" property="phoneNumber"></result>
+        <result column="credit" property="credit"></result>
+        <result column="usertype" property="userType"></result>
+    </resultMap>
+</mapper>

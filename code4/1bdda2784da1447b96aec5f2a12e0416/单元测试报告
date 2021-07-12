@@ -1,0 +1,88 @@
+# 酒店管理系统软件详细设计描述文档
+
+## 文档修改历史
+
+| 修改人员 | 日期 | 修改原因 | 版本号 |
+| :------: | ---- | -------- | ------ |
+|赵晓颖 |2020.6.29|完成文档框架|1.0|
+|赵晓颖 |2020.6.30|完善文档|1.1|
+
+##1.编写目的
+
+本单元测试报告的目的有以下三条
+(1)对单元测试结果进行整理和汇总，形成正确的文档。
+(2)为软件单元的评审验收提供依据
+(3)纳入软件产品配置管理库
+
+##2.软件单元描述
+
+| 被测试单元 | 相关单元 |所属子系统|单元设计|单元测试|
+| :------: | ------ |---------|------|------|
+|AdminController|AdminService|工作人员账户管理系统|管理员的控制类，向系统发送管理员的操作请求并调用系统方法进行处理，处理成功后反馈给管理员。|对控制类发送操作请求，并检查对比访问结果与操作预期结果。|
+|addManager|manageHotel，addManager（AdminMapper）|工作人员账户管理系统|工作人员账户管理，包括增加、删除工作人员账号|通过manageHotel添加主管人员账号信息，并对比预期结果|
+|getAllManagers|manageHotel，getAllManagers（AdminMapper）|工作人员账户管理系统|工作人员账户管理，获取所有工作人员账户信息|通过manageHotel相关操作查看工作人员账户列表|
+|deleteManager|manageHotel，deleteManager（AdminMapper）|工作人员账户管理系统|工作人员账户管理，包括增加、删除工作人员账号|通过manageHotel删除工作人员账号信息，并对比预期结果|
+|CoponController|CouponMatchStrategy，CouponService|优惠策略系统|管理员的控制类，向系统发送管理员的操作请求并调用系统方法进行处理，处理成功后反馈给管理员。|对控制类发送操作请求，并检查对比访问结果与操作预期结果。|
+|addHotelTargetMoneyCoupon|addCoupon，insertCoupon|优惠策略系统|优惠策略管理，添加满减优惠策略|通过addCoupon添加优惠策略，并对比预期结果|
+|getHotelAllCoupons|Coupon，insertCoupon|优惠策略系统|优惠策略管理，获取所有优惠策略列表|通过Coupon相关操作，查看优惠策略信息列表|
+|getOrderMatchCoupons|addCoupon，orderModal，insertCoupon|优惠策略系统|通过酒店id匹配优惠策略|通过orderModal结算订单时查看优惠信息，并对比预期结果|
+|HotelController|HotelService，RoomService|酒店信息管理系统|管理员的控制类，向系统发送管理员的操作请求并调用系统方法进行处理，处理成功后反馈给管理员。|对控制类发送操作请求，并检查对比访问结果与操作预期结果。|
+|createHotel|hotelList，hotelDetail，addHotel|酒店信息管理系统|添加酒店|通过addHotel添加酒店，并对比预期结果|
+|retrieveAllHotels|hotelList，addHotel|酒店信息管理系统|列表获取酒店信息|通过hotelList相关操作，查看酒店信息列表|
+|deleteByHotelId|hotelList|酒店信息管理系统|酒店信息管理，删除酒店信息|通过hotelList相关操作，查看酒店信息列表|
+|addRoomInfo|hotelDetail，addRoomModal，updateRoomInfo，insertRoomInfo，retrieveHotelRoomInfo|酒店信息管理系统|酒店信息管理，添加酒店客房信息|通过addRoomModal添加酒店客房信息，并对比预期结果|
+|retrieveHotelDetail|hotelDetail，addHotel|酒店信息管理系统|获取某家酒店详细信息|通过hotelDetail相关操作，查看酒店详细信息列表|
+|findHotelInfo|hotelList，selectHotelInfo|酒店信息管理系统|根据检索条件筛选符合条件的酒店|通过hotelList相关操作，查看筛选后酒店列表，并对比预期结果|
+|OrderController|OrderService|订单管理系统|用户和管理员的控制类，向系统发送用户和管理员的操作请求并调用系统方法进行处理，处理成功后反馈给管理员或用户。|对控制类发送操作请求，并检查对比访问结果与操作预期结果。|
+|reserveHotel|orderModal,addOrder|订单管理系统|预定酒店|通过orderModal预定酒店，并对比预期结果|
+|deleteByOrderId|manageHotel，getAllOrders|订单管理系统|根据订单id删除订单信息|通过manageHotel删除订单，并对比预期结果|
+|retrieveAllOrders|info，manageHotel，getAllOrders|订单管理系统|获得所有订单信息|通过info，manageHotel相关操作，查看订单信息列表|
+|annulOrder|info，getAllOrders|订单管理系统|撤销订单|通过info撤销订单，并对比预期结果|
+|AccountController|AccountService|用户信息管理系统|用户的控制类，向系统发送用户的操作请求并调用系统方法进行处理，处理成功后反馈给用户。|对控制类发送操作请求，并检查对比访问结果与操作预期结果。|
+|login|login|用户信息管理系统|登录已有账号|通过login登录已有账号，并对比预期结果|
+|registerAccount|login，createNewAccount|用户信息管理系统|创建一个新的账号|通过login创建一个新的账号，并对比预期结果|
+|getUserInfo|info，getAccountByName，getAccountById|用户信息管理系统|获取用户信息|通过info相关操作，查看用户信息列表|
+|updateInfo|info，updateAccount|用户信息管理系统|更新用户信息|通过info相关操作，查看用户信息列表|
+|deleteUser|info，deleteUser|用户信息管理系统|删除用户账号|通过login删除用户账号，并对比预期结果|
+
+##3.测试过程
+| 被测试单元 |测试过程|
+| :------: | ------ |
+|AdminController|对控制类发送5-7次增删改覆盖操作请求，并检查对比访问结果与操作预期结果|
+|addManager|添加5个测试账户，检查返回结果是否符合预期|
+|getAllManagers|通过manageHotel相关操作查看已添加的工作人员账户列表是否符合预期|
+|deleteManager|删除5个测试账户，检查返回结果是否符合预期|
+|CoponController|对控制类发送5-7次增删改覆盖操作请求，并检查对比访问结果与操作预期结果|
+|addHotelTargetMoneyCoupon|添加5个测试优惠策略，检查返回结果是否符合预期|
+|getHotelAllCoupons|通过Coupon相关操作，查看优惠策略信息列表是否符合预期|
+|getOrderMatchCoupons|通过orderModal结算订单时查看优惠信息，并对比预期结果|
+|HotelController|对控制类发送5-7次增删改覆盖操作请求，并检查对比访问结果与操作预期结果|
+|createHotel|添加5个测试酒店信息，检查返回结果是否符合预期|
+|retrieveAllHotels|通过hotelList相关操作，查看酒店信息列表是否符合预期|
+|deleteByHotelId|删除5个酒店账户，检查返回结果是否符合预期|
+|addRoomInfo|通过addRoomModal添加酒店客房信息，并对比预期结果是否符合预期|
+|retrieveHotelDetail|通过hotelDetail相关操作，查看酒店详细信息列表是否符合预期|
+|findHotelInfo|通过hotelList相关操作，查看筛选后酒店列表，并对比预期结果|
+|OrderController|对控制类发送5-7次增删改覆盖操作请求，并检查对比访问结果与操作预期结果|
+|reserveHotel|添加5组测试订单信息，查看订单列表是否符合预期|
+|deleteByOrderId|通过manageHotel删除订单，检查返回结果是否符合预期|
+|retrieveAllOrders|通过info，manageHotel相关操作，查看订单信息列表是否符合预期|
+|annulOrder|撤销5个订单，并对比预期结果|
+|AccountController|对控制类发送5-7次增删改覆盖操作请求，并检查对比访问结果与操作预期结果|
+|login|通过login登录不同的已有账号，查看能否登录成功|
+|registerAccount|通过login创建5个新的账号，并对比预期结果|
+|getUserInfo|通过info相关操作，查看用户信息列表并检查对比访问结果与操作预期结果|
+|updateInfo|通过info相关操作，查看用户信息列表是否符合预期|
+|deleteUser|通过login删除已有的用户账号，并对比预期结果|
+
+##4.总结
+###4.1 测试结论
+(1)测试执行完整度高，可维护性好，功能全部通过
+(2)测试风险微小
+(3)测试目标完成
+(4)测试通过
+
+###4.2 测试建议
+(1)可能存在的潜在的bug，以后发现后及时的修复。
+(2)程序员能够及时的修改bug,产品设计希望日后更加美化一点。
+(3)对于复杂功能的实现，例如订单的详细分类、酒店的检索需改进完善。

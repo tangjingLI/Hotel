@@ -1,0 +1,199 @@
+<template>
+    <a-layout>
+        <a-layout-content>
+            <div class="hotelDetailCard">
+                <h1>
+                    {{ currentHotelInfo.title }}
+                </h1>
+                <div class="hotel-info">
+                    <a-card style="width: 240px">
+                        <img
+                                alt="example"
+                                src="@/assets/cover.jpeg"
+                                slot="cover"
+                                referrerPolicy="no-referrer"
+                        />
+                    </a-card>
+                    <div class="info">
+                        <div class="items" v-if="currentHotelInfo.name">
+                            <span class="label">酒店名称：</span>
+                            <span class="value">{{ currentHotelInfo.name }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.address">
+                            <span class="label">地址</span>
+                            <span class="value">{{ currentHotelInfo.address }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.rate">
+                            <span class="label">评分:</span>
+                            <span class="value">{{ currentHotelInfo.rate }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.hotelStar">
+                            <span class="label">星级:</span>
+                            <a-rate style="font-size: 15px" :value="getHotelStar" disabled allowHalf/>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.description">
+                            <span class="label">酒店简介:</span>
+                            <span class="value">{{ currentHotelInfo.description }}</span>
+                        </div>
+                    </div>
+                </div>
+                <a-divider></a-divider>
+                <a-tabs>
+                    <a-tab-pane tab="房间信息" key="1">
+                        <RoomList :rooms="currentHotelInfo.rooms"></RoomList>
+                    </a-tab-pane>
+                    <a-tab-pane tab="酒店详情" key="2">
+                        <div class="detail">
+                        <div class="items" v-if="currentHotelInfo.phoneNum">
+                            <span class="label">电话: </span>
+                            <span class="value">{{ currentHotelInfo.phoneNum }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.bizRegion">
+                            <span class="label">酒店商圈: </span>
+                            <span class="value">{{ currentHotelInfo.bizRegion }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.address">
+                            <span class="label">酒店地址: </span>
+                            <span class="value">{{ currentHotelInfo.address }}</span>
+                        </div>
+                        <div class="items" v-if="currentHotelInfo.description">
+                            <span class="label">酒店简介: </span>
+                            <span class="value">{{ currentHotelInfo.description }}</span>
+                        </div>
+                        </div>
+                    </a-tab-pane>
+                    <a-tab-pane tab="酒店评价" key="3">
+                        <div class="comments"></div>
+                        <div class="username">{{"用户167"}}</div><div class="time">{{"2020-6-25"}}</div>
+                        <div class="com">{{"环境优美，地理位置好，交通方便，房间舒适卫生，服务人员很热情，乐于提供各种帮助，早餐丰富。"}}</div>
+                        <div class="username">{{"用户133"}}</div> <div class="time">{{"2020-6-20"}}</div>
+                        <div class="com">{{"设施很人性化，网络信号好，窗外风景好。性价比不错，下次还要入住."}} </div>
+                        <div class="username">{{"用户756"}}</div><div class="time">{{"2020-6-19"}}</div>
+                        <div class="com">{{"交通方便，但隔音效果需要加强，总体来说性价比较高。"}}</div>
+
+                    </a-tab-pane>
+                </a-tabs>
+            </div>
+        </a-layout-content>
+    </a-layout>
+</template>
+<script>
+    import { mapGetters, mapActions, mapMutations } from 'vuex'
+    import RoomList from './components/roomList'
+
+    export default {
+        name: 'hotelDetail',
+        components: {
+            RoomList,
+        },
+        data() {
+            return {
+
+            }
+        },
+
+
+        computed: {
+            // 使用对象展开运算符将 getter （这里只有一个currentHotelInfo）混入 computed 对象中
+            ...mapGetters([
+                'currentHotelInfo',
+            ]),
+            getHotelStar:function () {
+                let starStr=this.currentHotelInfo.hotelStar
+                if (starStr=='Five'){
+                    return 5
+                }
+                else if (starStr=='Four'){
+                    return 4
+                }
+                else if (starStr=='Three'){
+                    return 3
+                }
+                return 0
+            }
+        },
+        mounted() {
+            this.set_currentHotelId(Number(this.$route.params.hotelId))
+            this.getHotelById()
+        },
+        beforeRouteUpdate(to, from, next) {
+            this.set_currentHotelId(Number(to.params.hotelId))
+            this.getHotelById()
+            next()
+        },
+        methods: {
+            ...mapMutations([
+                'set_currentHotelId',
+            ]),
+            ...mapActions([
+                'getHotelById'
+            ])
+        }
+    }
+</script>
+<style scoped lang="less">
+    .hotelDetailCard {
+        padding: 50px 50px;
+    }
+    .hotel-info {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        .info{
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+            .items {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+                .label{
+                    margin-right: 10px;
+                    font-size: 18px;
+                }
+                .value {
+                    margin-right: 15px
+                }
+            }
+        }
+    }
+    .detail{
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+        .items {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            .label{
+                margin-right: 10px;
+                font-size: 17px;
+            }
+            .value {
+                margin-right: 15px
+            }
+        }
+
+    }
+    .comments{
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+
+
+    }
+    .com{
+        margin-bottom: 10px;
+    }
+
+    .username{
+        font-size: 15px;
+        font-weight: bold;
+
+    }
+    .time{
+        font-size: 70%;
+    }
+
+</style>

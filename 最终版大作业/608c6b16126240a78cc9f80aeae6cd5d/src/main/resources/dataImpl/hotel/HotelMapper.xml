@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hotel.data.hotel.HotelMapper">
+    <insert id="insertHotel" parameterType="com.example.hotel.po.Hotel"
+    useGeneratedKeys="true" keyProperty="id">
+        insert into Hotel(address,bizRegion,hotelDescription,hotelStar,hotelName,phoneNum,rate,manager_id)
+        values (#{address},#{bizRegion},#{description},#{hotelStar},#{hotelName},#{phoneNum},#{rate},#{managerId})
+    </insert>
+
+    <select id="selectAllHotel" resultMap="Hotel">
+        select * from Hotel
+    </select>
+    <select id="selectById" resultMap="Hotel">
+        select * from Hotel where id=#{id}
+    </select>
+
+
+    <resultMap id="Hotel" type="com.example.hotel.vo.HotelVO">
+        <id column="id" property="id"></id>
+        <result column="address" property="address"></result>
+        <result column="bizRegion" property="bizRegion"></result>
+        <result column="hotelDescription" property="description"></result>
+        <result column="hotelStar" property="hotelStar"></result>
+        <result column="hotelName" property="name"></result>
+        <result column="phoneNum" property="phoneNum"></result>
+        <result column="rate" property="rate"></result>
+        <result column="manager_id" property="managerId"></result>
+
+    </resultMap>
+
+    <select id="selectHotelInfo" parameterType="com.example.hotel.po.HotelForm" resultType="com.example.hotel.vo.HotelVO" >
+        SELECT h.id ,address ,bizRegion,hotelDescription,hotelStar ,h.hotelName as name, h.phoneNum ,h.rate, manager_id FROM hotel AS h INNER JOIN room  AS r
+        ON h.id=r.hotel_id
+        <where>
+            <if test="hotelName!=null and hotelName!=''"> AND h.hotelName LIKE CONCAT('%',#{hotelName},'') </if>
+            <if test="roomType!=null ">   AND r.roomType = #{roomType} </if>
+          <!--   <if test="price!=null and price!=''">   AND r.price >= #{price} </if> -->
+            <if test="curNum!=null and curNum!=''">   AND r.curNum >= #{curNum} </if>
+            <if test="hotelStar!=null ">   AND h.hotelStar = #{hotelStar} </if>
+        </where>
+        group by h.id ,address ,bizRegion,hotelDescription,hotelStar ,h.hotelName, h.phoneNum ,h.rate, manager_id
+    </select>
+
+    <!-- 根据酒店id进行删除-->
+    <delete id="deleteByHotelId">
+        delete from hotel where id = #{hotelId}
+    </delete>
+
+</mapper>

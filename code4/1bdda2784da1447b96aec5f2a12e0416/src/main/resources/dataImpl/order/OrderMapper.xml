@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hotel.data.order.OrderMapper">
+
+    <select id="getAllOrders" resultMap="Order">
+        select * from OrderList
+    </select>
+    <select id="getUserOrders" resultMap="Order">
+        select * from OrderList where userId=#{userid}
+    </select>
+    <select id="getHotelOrders" resultMap="Order">
+        select * from OrderList where hotelId=#{hotelId}
+    </select>
+    <insert id="addOrder" parameterType="com.example.hotel.po.Order" useGeneratedKeys="true" keyProperty="id">
+        insert into OrderList(userId,hotelId,hotelName,checkInDate,checkOutDate,roomType,roomNum,peopleNum,haveChild,createDate,price,clientName,phoneNumber,orderState)
+        values(#{userId},#{hotelId},#{hotelName},#{checkInDate},#{checkOutDate},#{roomType},#{roomNum},#{peopleNum},#{haveChild},#{createDate},#{price},#{clientName},#{phoneNumber},#{orderState})
+    </insert>
+    <select id="getOrderById" resultMap="Order">
+        select * from OrderList where id=#{orderid}
+    </select>
+    <!--撤销订单，修改，错误：传入的是orderid 变成了id ，表名orderList错误写成order；
+    错误写法#{"已撤销"} 或者可以改成 ${已撤销}
+    下面三个方法可以写在一起，都是更新操作，只要传入的状态不一样即可。
+    -->
+    <update id="annulOrder">
+        update OrderList set orderState='已撤销'
+        where id = #{orderid}
+    </update>
+
+    <update id="checkInOrder">
+        update OrderList set orderState='已入住'
+        where id=#{orderid}
+    </update>
+    <update id="checkOutOrder">
+        update OrderList set orderState='已退房'
+        where id=#{orderid}
+    </update>
+
+    <!--取消订单的数据库操作-->
+    <!-- 根据订单id进行删除-->
+    <delete id="deleteByOrderId">
+         delete from OrderList where id = #{orderId}
+     </delete>
+    
+    <resultMap id="Order" type="com.example.hotel.po.Order">
+        <id column="id" property="id"></id>
+        <result column="userId" property="userId"></result>
+        <result column="hotelId" property="hotelId"></result>
+        <result column="hotelName" property="hotelName"></result>
+        <result column="checkInDate" property="checkInDate"></result>
+        <result column="checkOutDate" property="checkOutDate"></result>
+        <result column="roomType" property="roomType"></result>
+        <result column="roomNum" property="roomNum"></result>
+        <result column="peopleNum" property="peopleNum"></result>
+        <result column="haveChild" property="haveChild"></result>
+        <result column="createDate" property="createDate"></result>
+        <result column="price" property="price"></result>
+        <result column="clientName" property="clientName"></result>
+        <result column="phoneNumber" property="phoneNumber"></result>
+        <result column="orderState" property="orderState"></result>
+    </resultMap>
+</mapper>
